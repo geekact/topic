@@ -70,18 +70,16 @@ class Topic {
       activeObserver.add(name);
       topicItems[name].forEach((item) => {
         if (!item[UN_SUBSCRIBED]) {
-          // fixme: 不做try...catch，循环能否继续下去
           try {
             item['callback'](...args);
           } catch (e) {
-            setTimeout(() => {
-              throw e;
-            });
+            activeObserver.delete(name);
+            throw e;
+          } finally {
+            if (item[RUN_ONCE]) {
+              item[UN_SUBSCRIBED] = true;
+            }
           }
-        }
-
-        if (item[RUN_ONCE]) {
-          item[UN_SUBSCRIBED] = true;
         }
       });
       Topic.refresh(name);

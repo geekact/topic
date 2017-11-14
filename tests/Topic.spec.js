@@ -4,10 +4,10 @@ import {Topic} from '../src/Topic';
 const expect = require('expect.js');
 
 describe('class Topic', () => {
-  const obj = new Topic('/hello');
+  const obj = new Topic('/hi');
 
   it('should hav property topicName', () => {
-    expect(obj).to.have.property('topicName', '/hello');
+    expect(obj).to.have.property('topicName', '/hi');
   });
 
   it('can publish', () => {
@@ -35,7 +35,7 @@ describe('class Topic', () => {
     const handle = obj.subscribe(() => {});
     
     expect(handle).to.be.an('object');
-    expect(handle).to.have.property('name', '/hello');
+    expect(handle).to.have.property('name', '/hi');
     expect(handle).to.have.property('token');
     expect(Topic.destroy(handle.name, handle.token)).to.be(true);
     expect(Topic.destroy(handle.name, 'invalid token')).to.be(false);
@@ -54,7 +54,7 @@ describe('class Topic', () => {
       expect(amount).to.be(2);
     }
 
-    expect(Topic.destroy('/hello', handle.token)).to.be(false);
+    expect(Topic.destroy('/hi', handle.token)).to.be(false);
     
     expect(Topic.getItems(handle.name)).to.have.length(1);
     setTimeout(() => {
@@ -70,18 +70,30 @@ describe('class Topic', () => {
       expect(Topic.getItems(handle.name)).to.have.length(index);
       Topic.destroy(handle.name, handle.token);
     }
-    expect(Topic.getItems('/hello')).to.have.length(11);
+    expect(Topic.getItems('/hi')).to.have.length(11);
 
     for (let index = 12; index <= 21; ++index) {
       const handle = obj.subscribeOnce(() => {});
       obj.publish();
       expect(Topic.getItems(handle.name)).to.have.length(index);
     }
-    expect(Topic.getItems('/hello')).to.have.length(21);
+    expect(Topic.getItems('/hi')).to.have.length(21);
 
     setTimeout(() => {
-      expect(Topic.getItems('/hello')).to.have.length(0);
+      expect(Topic.getItems('/hi')).to.have.length(0);
       done();
     });
+  });
+  
+  it('cannot call synchronous publish in the callback function', () => {
+    obj.subscribe(() => {
+      try {
+        obj.publish();
+      } catch (e) {
+        expect(e).to.be.a(ReferenceError);
+      }
+    });
+    
+    obj.publish();
   });
 });
