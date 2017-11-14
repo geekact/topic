@@ -1,0 +1,39 @@
+{
+  "name": "topic",
+  "version": "1.0.0",
+  "description": "subscribe and publish your business.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "babel-node node_modules/.bin/babel-istanbul cover node_modules/mocha/bin/_mocha -- --require=babel-register -R spec tests/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fwh1990/topic.git"
+  },
+  "keywords": [
+    "subscribe",
+    "subscription",
+    "publish"
+  ],
+  "author": "范文华",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fwh1990/topic/issues"
+  },
+  "homepage": "https://github.com/fwh1990/topic#readme",
+  "dependencies": {
+    "babel-polyfill": "^6.26.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-istanbul": "^0.12.2",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-register": "^6.26.0",
+    "expect.js": "^0.3.1",
+    "istanbul": "^0.4.5",
+    "mocha": "^4.0.1"
+  }
+}
