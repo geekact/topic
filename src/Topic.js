@@ -34,7 +34,7 @@ class Topic {
   };
 
   /**
-   * destroy your description by yourself
+   * destroy your subscription by yourself
    * @param {string} topicName
    * @param {string} token
    * @returns {boolean}
