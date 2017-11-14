@@ -1,5 +1,5 @@
 import 'babel-polyfill';
-import {topic} from '../src/index';
+import topic from '../src/index';
 
 const expect = require('expect.js');
 

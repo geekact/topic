@@ -11,7 +11,7 @@ This project support `nodejs` and `js`
 ### subscribe and publish
 Normal subscribe and publish
 ````
-import {topic} from 'topic';
+import topic from 'topic';
 
 topic('register').subscribe(function(name, age) {
   console.log('Hello' + name + ', are you ' + age + 'old?');

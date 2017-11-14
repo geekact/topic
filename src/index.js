@@ -1,6 +1,6 @@
 import {Topic} from './Topic';
 
-const topichandles = {};
+const topicHandles = {};
 
 /**
  * 
@@ -10,11 +10,11 @@ const topichandles = {};
 const topic = (topicName) => {
   topicName = String(topicName).trim();
   
-  if (!topichandles[topicName]) {
-    topichandles[topicName] = new Topic(topicName);
+  if (!topicHandles[topicName]) {
+    topicHandles[topicName] = new Topic(topicName);
   }
   
-  return topichandles[topicName];
+  return topicHandles[topicName];
 };
 
 /**
@@ -25,6 +25,4 @@ topic.unsubscribe = (handle) => {
   return Topic.destroy(handle.name, handle.token);
 };
 
-export {
-  topic,
-};
+export default topic;
