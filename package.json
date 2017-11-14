@@ -1,6 +1,6 @@
 {
   "name": "topic",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "subscribe and publish your business.",
   "main": "src/index.js",
   "scripts": {
