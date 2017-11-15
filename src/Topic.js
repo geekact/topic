@@ -16,11 +16,21 @@ class Topic {
   constructor(name) {
     this.topicName = name;
   }
-  
+
+  /**
+   * get subscriptions for test
+   * @param topicName
+   * @returns {Array}
+   */
   static getItems(topicName) {
     return topicItems[topicName] || [];
   }
-  
+
+  /**
+   * reduce memory size by remove the unSubscribed items
+   * and publish action can be faster
+   * @param topicName
+   */
   static refresh = (topicName) => {
     if (!refreshTimer.has(topicName)) {
       refreshTimer.set(

@@ -41,6 +41,13 @@ var Topic = function () {
     this.topicName = name;
   }
 
+  /**
+   * get subscriptions for test
+   * @param topicName
+   * @returns {Array}
+   */
+
+
   (0, _createClass3.default)(Topic, [{
     key: 'publish',
 
@@ -140,6 +147,13 @@ var Topic = function () {
     value: function getItems(topicName) {
       return topicItems[topicName] || [];
     }
+
+    /**
+     * reduce memory size by remove the unSubscribed items
+     * and publish action can be faster
+     * @param topicName
+     */
+
 
     /**
      * destroy your subscription by yourself
