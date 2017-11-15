@@ -154,6 +154,21 @@ var Topic = function () {
      * @param {string} topicName
      */
 
+  }, {
+    key: 'refresh',
+    value: function refresh(topicName) {
+      if (!refreshTimer.has(topicName)) {
+        refreshTimer.set(topicName, setTimeout(function () {
+          topicItems[topicName] = topicItems[topicName].filter(function (item) {
+            return !item[UN_SUBSCRIBED];
+          });
+          refreshTimer.delete(topicName);
+        }));
+      }
+    }
+  }, {
+    key: 'destroy',
+
 
     /**
      * destroy your subscription by yourself
@@ -161,35 +176,22 @@ var Topic = function () {
      * @param {string} token
      * @returns {boolean}
      */
+    value: function destroy(topicName, token) {
+      if (topicItems[topicName]) {
+        return topicItems[topicName].some(function (item) {
+          if (item['token'] === token && !item[UN_SUBSCRIBED]) {
+            item[UN_SUBSCRIBED] = true;
+            Topic.refresh(topicName);
 
+            return true;
+          }
+        });
+      }
+
+      return false;
+    }
   }]);
   return Topic;
 }();
-
-Topic.refresh = function (topicName) {
-  if (!refreshTimer.has(topicName)) {
-    refreshTimer.set(topicName, setTimeout(function () {
-      topicItems[topicName] = topicItems[topicName].filter(function (item) {
-        return !item[UN_SUBSCRIBED];
-      });
-      refreshTimer.delete(topicName);
-    }));
-  }
-};
-
-Topic.destroy = function (topicName, token) {
-  if (topicItems[topicName]) {
-    return topicItems[topicName].some(function (item) {
-      if (item['token'] === token && !item[UN_SUBSCRIBED]) {
-        item[UN_SUBSCRIBED] = true;
-        Topic.refresh(topicName);
-
-        return true;
-      }
-    });
-  }
-
-  return false;
-};
 
 exports.Topic = Topic;

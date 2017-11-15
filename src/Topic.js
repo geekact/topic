@@ -31,7 +31,7 @@ class Topic {
    * and publish action can be faster
    * @param {string} topicName
    */
-  static refresh = (topicName) => {
+  static refresh(topicName) {
     if (!refreshTimer.has(topicName)) {
       refreshTimer.set(
         topicName,
@@ -51,7 +51,7 @@ class Topic {
    * @param {string} token
    * @returns {boolean}
    */
-  static destroy = (topicName, token) => {
+  static destroy(topicName, token) {
     if (topicItems[topicName]) {
       return topicItems[topicName].some((item) => {
         if (item['token'] === token && !item[UN_SUBSCRIBED]) {
