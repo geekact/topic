@@ -1,13 +1,15 @@
 const
   topicItems = {},
   activeObserver = new Set(),
-  refreshTimer = new Map();
-const
+  refreshTimer = new Map(),
   UN_SUBSCRIBED = 'is_dead',
   RUN_ONCE = 'is_once';
 let
   tokenGenerator = 0;
 
+/**
+ * Based on observer mode
+ */
 class Topic {
   topicName;
 
@@ -61,6 +63,7 @@ class Topic {
    */
   publish(...args) {
     const name = this.topicName;
+    let itemChanged = false;
 
     if (topicItems[name]) {
       if (activeObserver.has(name)) {
@@ -77,12 +80,17 @@ class Topic {
             throw e;
           } finally {
             if (item[RUN_ONCE]) {
+              itemChanged = true;
               item[UN_SUBSCRIBED] = true;
             }
           }
         }
       });
-      Topic.refresh(name);
+      
+      if (itemChanged) {
+        Topic.refresh(name);
+      }
+      
       activeObserver.delete(name);
     }
   }
@@ -111,10 +119,7 @@ class Topic {
       callback,
     });
 
-    return {
-      name,
-      token,
-    };
+    return {name, token};
   }
 
   /**
@@ -135,6 +140,4 @@ class Topic {
   }
 }
 
-export {
-  Topic,
-}
+export {Topic};
