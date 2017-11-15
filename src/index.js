@@ -25,4 +25,4 @@ topic.unsubscribe = (handle) => {
   return Topic.destroy(handle.name, handle.token);
 };
 
-export default topic;
+export {topic};

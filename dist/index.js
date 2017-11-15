@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.topic = undefined;
 
 var _Topic = require('./Topic');
 
@@ -31,4 +32,4 @@ topic.unsubscribe = function (handle) {
   return _Topic.Topic.destroy(handle.name, handle.token);
 };
 
-exports.default = topic;
+exports.topic = topic;

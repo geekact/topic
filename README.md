@@ -3,6 +3,18 @@
 npm install topic --save
 ````
 
+## ES6
+You should install `babel` plugin if your code include keyword `import`:
+````
+npm install babel-cli babel-preset-env --save-dev
+````
+And add file `.babelrc` to root directory.
+````
+{
+  "presets": ["env"]
+}
+````
+
 ## support
 This project support `nodejs` and `js`
 
@@ -11,7 +23,7 @@ This project support `nodejs` and `js`
 ### subscribe and publish
 Normal subscribe and publish
 ````
-import topic from 'topic';
+import {topic} from 'topic';
 
 topic('register').subscribe(function(name, age) {
   console.log('Hello' + name + ', are you ' + age + 'old?');

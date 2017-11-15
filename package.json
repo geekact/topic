@@ -1,11 +1,12 @@
 {
   "name": "topic",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "subscribe and publish your business.",
   "main": "dist/index.js",
   "scripts": {
     "lint": "exit 0",
-    "build": "babel src --out-dir dist && git add dist/*",
+    "build:dist": "babel src --out-dir dist && git add dist/*",
+    "build:demo": "babel demo/index.js -o demo/_dist.js",
     "test": "babel-node node_modules/.bin/babel-istanbul cover node_modules/mocha/bin/_mocha -- --require=babel-register -R spec tests/"
   },
   "repository": {
@@ -24,7 +25,7 @@
   },
   "homepage": "https://github.com/fwh1990/topic#readme",
   "pre-commit": {
-    "run": ["lint", "build"]
+    "run": ["lint", "build:dist", "build:demo"]
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0"
