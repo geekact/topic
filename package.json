@@ -1,9 +1,10 @@
 {
   "name": "topic",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "subscribe and publish your business.",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
+    "build": "babel src --out-dir dist",
     "test": "babel-node node_modules/.bin/babel-istanbul cover node_modules/mocha/bin/_mocha -- --require=babel-register -R spec tests/"
   },
   "repository": {
@@ -21,6 +22,9 @@
     "url": "https://github.com/fwh1990/topic/issues"
   },
   "homepage": "https://github.com/fwh1990/topic#readme",
+  "pre-commit": {
+    "run": ["build"]
+  },
   "dependencies": {
     "babel-polyfill": "^6.26.0"
   },
@@ -34,6 +38,7 @@
     "babel-register": "^6.26.0",
     "expect.js": "^0.3.1",
     "istanbul": "^0.4.5",
-    "mocha": "^4.0.1"
+    "mocha": "^4.0.1",
+    "pre-commit": "^1.2.2"
   }
 }
