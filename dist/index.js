@@ -10,7 +10,7 @@ var topicHandles = {};
 
 /**
  * 
- * @param {string} topicName
+ * @param {string|number} topicName
  * @returns {Topic}
  */
 var topic = function topic(topicName) {

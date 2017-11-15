@@ -4,6 +4,7 @@
   "description": "subscribe and publish your business.",
   "main": "dist/index.js",
   "scripts": {
+    "lint": "exit 0",
     "build": "babel src --out-dir dist && git add dist/*",
     "test": "babel-node node_modules/.bin/babel-istanbul cover node_modules/mocha/bin/_mocha -- --require=babel-register -R spec tests/"
   },
@@ -23,7 +24,7 @@
   },
   "homepage": "https://github.com/fwh1990/topic#readme",
   "pre-commit": {
-    "run": ["build"]
+    "run": ["lint", "build"]
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0"

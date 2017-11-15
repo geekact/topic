@@ -4,7 +4,7 @@ const topicHandles = {};
 
 /**
  * 
- * @param {string} topicName
+ * @param {string|number} topicName
  * @returns {Topic}
  */
 const topic = (topicName) => {

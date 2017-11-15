@@ -55,7 +55,7 @@ var Topic = function () {
     /**
      * Publish your topic with arguments
      * Observer will notice all of the subscribers with arguments
-     * @param args
+     * @param {...} args
      */
     value: function publish() {
       for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
@@ -151,7 +151,7 @@ var Topic = function () {
     /**
      * reduce memory size by remove the unSubscribed items
      * and publish action can be faster
-     * @param topicName
+     * @param {string} topicName
      */
 
 
