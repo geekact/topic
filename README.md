@@ -1,5 +1,10 @@
 A light event management with typescript.
 
+[![License](https://img.shields.io/github/license/fwh1990/topic)](https://github.com/fwh1990/topic/blob/master/LICENSE)
+[![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/fwh1990/topic/CI/master)](https://github.com/fwh1990/topic/actions)
+[![Codecov](https://img.shields.io/codecov/c/github/fwh1990/topic)](https://codecov.io/gh/fwh1990/topic)
+
+
 ## Installation
 ````
 yarn add topic
