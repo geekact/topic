@@ -1,0 +1,11 @@
+{
+    "typescript.preferences.importModuleSpecifier": "relative",
+    "typescript.suggest.autoImports": true,
+    "typescript.preferences.quoteStyle": "single",
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
+    "emmet.triggerExpansionOnTab": true,
+    "editor.tabSize": 2,
+    "typescript.tsdk": "node_modules/typescript/lib"
+}

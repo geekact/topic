@@ -3,3 +3,6 @@
 node_modules/
 coverage/
 demo/_dist.js
+.nyc_output
+*.js
+*.d.ts

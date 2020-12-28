@@ -1,49 +1,67 @@
-## install
+A light event management with typescript.
+
+## Installation
 ````
-npm install topic --save
+yarn add topic
 ````
 
-## ES6
-You should install `babel` plugin if your code include keyword `import`:
-````
-npm install babel-cli babel-preset-env --save-dev
-````
-And add file `.babelrc` to root directory.
-````
-{
-  "presets": ["env"]
-}
-````
+# Methods
 
-## support
-This project support `nodejs` and `js`
+### subscribe
+```typescript
+import { topic } from 'topic';
 
-# documentation
-
-### subscribe and publish
-Normal subscribe and publish
-````
-import {topic} from 'topic';
-
-topic('register').subscribe(function(name, age) {
+topic.subscribe('who', (name, age) => {
   console.log('Hello' + name + ', are you ' + age + 'old?');
 });
 
-topic('register').publish('tom', 12);
-````
+topic.publish('who', 'Tom', 12);
+```
 
-### different between subscribe and subscribeOnce
->- `subscribe` will listen the relative topic all the lifecycle, unless you un-subscribe it.
->- `subscribeOnce` similar to subscribe, but just execute once.
+### subscribeOnce
+```typescript
+import { topic } from 'topic';
 
-### destroy subscription
-````
-const handle = topic('hi').subscribe(...);
+topic.subscribeOnce('who', (name) => {
+  console.log('Hello ' + name);
+});
 
-topic.unsubscribe(handle); // you should destroy the handle by yourself
-````
-or use `subscribeOnce`
-````
-topic('hi').subscribeOnce(...);
-topic('hi').publish(...); // subscribeOnce handle will be destroyed immediately.
-````
+// 1 subscription will receive message.
+topic.publish('who', 'Tom');
+// No subscription now.
+topic.publish('who', 'Tom');
+```
+
+### unsubscribe
+```typescript
+import { topic } from 'topic';
+
+const token = topic.subscribe('who', (name) => {
+  console.log('Hello ' + name);
+});
+
+// 1 subscription will receive message.
+topic.publish('who', 'Tom');
+// 1 subscription will receive message.
+topic.publish('who', 'John');
+
+topic.unsubscribe(token);
+// No subscription now.
+topic.publish('who', 'Tom');
+```
+
+# With typescript generic
+```typescript
+import { Topic } from 'topic';
+
+const customTopic = new Topic<{
+  foo: (name: string) => void;
+  bar: (name: string, age: number) => void;
+  // Uncomment next line if you want to support unexpected keys.
+  // [more: string]: (...args: any[]) => void;
+}>();
+
+// Make IDE happy now.
+customTopic.subscribe('foo', (name) => {});
+customTopic.publish('foo', 'Tom');
+```
