@@ -36,7 +36,7 @@ topic.publish('who', 'Tom');
 ```typescript
 import { topic } from 'topic';
 
-const token = topic.subscribe('who', (name) => {
+const handle = topic.subscribe('who', (name) => {
   console.log('Hello ' + name);
 });
 
@@ -45,9 +45,33 @@ topic.publish('who', 'Tom');
 // 1 subscription will receive message.
 topic.publish('who', 'John');
 
-topic.unsubscribe(token);
+handle.unsubscribe();
 // No subscription now.
 topic.publish('who', 'Tom');
+```
+
+### keep and release
+
+```typescript
+import { topic } from 'topic';
+
+const sub1 = topic.subscribe('who', (name) => {
+  console.log('Hello ' + name);
+});
+
+// sub1 will receive message.
+const handle = topic.keep('who', true, 'Tom');
+
+// sub2 will receive message 1-2ms later.
+const sub2 = topic.subscribe('who', (name) => {});
+
+// sub3 will receive message 1-2ms later automatically.
+const sub3 = topic.subscribe('who', (name) => {});
+
+handle.release();
+
+// No message will trigger this subscription.
+const sub3 = topic.subscribe('who', (name) => {});
 ```
 
 # With typescript generic

@@ -6,7 +6,7 @@
   "module": "index.module.js",
   "typings": "index.d.ts",
   "scripts": {
-    "test": "nyc mocha index.test.ts -r ts-node/register",
+    "test": "rm -rf *.js *.d.ts && nyc mocha index.test.ts -r ts-node/register",
     "prepublishOnly": "rm -rf *.js *.d.ts && yarn tsc && mv index.js index.cjs.js && yarn tsc --module ES6 && mv index.js index.module.js"
   },
   "repository": {
@@ -32,6 +32,7 @@
     "chain": "^0.1.3",
     "mocha": "^4.0.1",
     "nyc": "^15.1.0",
+    "sleep-promise": "^9.0.0",
     "ts-node": "^9.1.1",
     "typescript": "^4.1.3"
   },

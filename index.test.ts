@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import sleep from 'sleep-promise';
 import { Topic } from './index';
 
 it ('can subscribe', () => {
@@ -63,7 +64,7 @@ it ('can unsubscribe the topic by token', () => {
   topic.publish('hello');
   expect(counter).to.equal(2);
 
-  topic.unsubscribe(token);
+  token.unsubscribe();
   topic.publish('hello');
   expect(counter).to.equal(2);
 });
@@ -80,15 +81,15 @@ it ('can unpublish multiple times', () => {
     ++counter;
   });
 
-  topic.unsubscribe(token);
+  token.unsubscribe();
   topic.publish('hello');
   expect(counter).to.equal(0);
 
-  topic.unsubscribe(token);
+  token.unsubscribe();
   topic.publish('hello');
   expect(counter).to.equal(0);
 
-  topic.unsubscribe();
+  token.unsubscribe();
   topic.publish('hello1');
   expect(counter).to.equal(1);
 });
@@ -138,4 +139,108 @@ it ('can subscribe when publishing but only effect next time', () => {
   expect(counter).to.equal(5);
   topic.publish('world');
   expect(counter).to.equal(7);
+});
+
+it ('can keep publishing', async () => {
+  const topic = new Topic<{
+    hello: (num: number) => void;
+  }>();
+  let counter = 0;
+
+  topic.keep('hello', true, 3);
+  topic.subscribe('hello', (num) => {
+    counter += num;
+  });
+
+  expect(counter).to.equal(0);
+  await sleep(5);
+  expect(counter).to.equal(3);
+  await sleep(5);
+  expect(counter).to.equal(3);
+
+  topic.publish('hello', 4);
+  expect(counter).to.equal(7);
+
+  topic.keep('hello', true, 2);
+  expect(counter).to.equal(9);
+});
+
+it ('can set deps for keep publish', async () => {
+  const topic = new Topic<{
+    hello: (num: number) => void;
+  }>();
+  let deps = false;
+  let counter = 0;
+
+  topic.subscribe('hello', (num) => {
+    counter += num;
+  });
+
+  const token1 = topic.keep('hello', true, 1);
+  expect(counter).to.equal(1);
+  token1.release();
+
+  const token2 = topic.keep('hello', () => deps, 1);
+  expect(counter).to.equal(1);
+  token2.release();
+
+  deps = true;
+  topic.keep('hello', () => deps, 1);
+  expect(counter).to.equal(2);
+
+  topic.subscribe('hello', (num) => {
+    counter += num * 2;
+  });
+  expect(counter).to.equal(2);
+  await sleep(5);
+  expect(counter).to.equal(4);
+
+  deps = false;
+  topic.subscribe('hello', (num) => {
+    counter += num * 20;
+  });
+  expect(counter).to.equal(4);
+  await sleep(5);
+  expect(counter).to.equal(4);
+});
+
+it ('can release keeped handle', async () => {
+  const topic = new Topic<{
+    hello: (num: number) => void;
+  }>();
+  let counter = 0;
+
+  const token1 = topic.keep('hello', true, 1);
+  topic.subscribe('hello', (num) => {
+    counter += num;
+  });
+
+  expect(counter).to.equal(0);
+  await sleep(5);
+  expect(counter).to.equal(1);
+
+  const token2 = topic.keep('hello', true, 10);
+  expect(counter).to.equal(11);
+
+  topic.subscribe('hello', (num) => {
+    counter += num;
+  });
+  await sleep(5);
+  expect(counter).to.equal(22);
+
+  // remain 1 keeper
+  token2.release();
+  topic.subscribe('hello', (num) => {
+    counter += num;
+  });
+  await sleep(5);
+  expect(counter).to.equal(23);
+
+  // remain 0 keeper
+  token1.release();
+  topic.subscribe('hello', (num) => {
+    counter += num;
+  });
+  await sleep(5);
+  expect(counter).to.equal(23);
 });
