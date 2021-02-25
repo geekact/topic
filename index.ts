@@ -79,14 +79,12 @@ export class Topic<T extends CommonObject> {
       fn,
     });
 
-    if (this.keeps.length && this.keeps.filter((item) => item.name === name).length) {
-      setTimeout(() => {
-        const keeps = this.keeps.filter((item) => item.name === name && shouldPublish(item.deps));
+    if (this.keeps.length) {
+      const keeps = this.keeps.filter((item) => item.name === name && shouldPublish(item.deps));
 
-        for (let i = 0; i < keeps.length; ++i) {
-          fn.apply(null, keeps[i]!.args as Parameters<T[K]>);
-        }
-      });
+      for (let i = 0; i < keeps.length; ++i) {
+        fn.apply(null, keeps[i]!.args as Parameters<T[K]>);
+      }
     }
 
     return {

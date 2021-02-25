@@ -152,10 +152,6 @@ it ('can keep publishing', async () => {
     counter += num;
   });
 
-  expect(counter).to.equal(0);
-  await sleep(5);
-  expect(counter).to.equal(3);
-  await sleep(5);
   expect(counter).to.equal(3);
 
   topic.publish('hello', 4);
@@ -191,8 +187,6 @@ it ('can set deps for keep publish', async () => {
   topic.subscribe('hello', (num) => {
     counter += num * 2;
   });
-  expect(counter).to.equal(2);
-  await sleep(5);
   expect(counter).to.equal(4);
 
   deps = false;
@@ -215,8 +209,6 @@ it ('can release keeped handle', async () => {
     counter += num;
   });
 
-  expect(counter).to.equal(0);
-  await sleep(5);
   expect(counter).to.equal(1);
 
   const token2 = topic.keep('hello', true, 10);
@@ -225,7 +217,7 @@ it ('can release keeped handle', async () => {
   topic.subscribe('hello', (num) => {
     counter += num;
   });
-  await sleep(5);
+
   expect(counter).to.equal(22);
 
   // remain 1 keeper
