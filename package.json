@@ -1,6 +1,6 @@
 {
   "name": "topic",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "subscribe and publish your business.",
   "main": "index.cjs.js",
   "module": "index.module.js",
