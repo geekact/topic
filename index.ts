@@ -20,13 +20,13 @@ type Listener<T extends CommonObject> = Partial<Record<keyof T, {
 }[]>>;
 
 interface Keep<T extends CommonObject> {
-  deps: true | (() => boolean);
+  shouldPublish: true | (() => boolean);
   name: keyof T;
   token: string;
   args: any[];
 }
 
-const shouldPublish = (deps: true | (() => boolean)): boolean => {
+const when = (deps: true | (() => boolean)): boolean => {
   return typeof deps === 'boolean' ? deps : deps();
 };
 
@@ -80,7 +80,7 @@ export class Topic<T extends CommonObject> {
     });
 
     if (this.keeps.length) {
-      const keeps = this.keeps.filter((item) => item.name === name && shouldPublish(item.deps));
+      const keeps = this.keeps.filter((item) => item.name === name && when(item.shouldPublish));
 
       for (let i = 0; i < keeps.length; ++i) {
         fn.apply(null, keeps[i]!.args as Parameters<T[K]>);
@@ -100,12 +100,12 @@ export class Topic<T extends CommonObject> {
    * topic.keep('test', () => deps, 'hello', 'world');
    * ```
    */
-  keep<K extends keyof T>(name: K, deps: Keep<T>['deps'], ...args: Parameters<T[K]>): KeepToken {
+  keep<K extends keyof T>(name: K, shouldPublish: Keep<T>['shouldPublish'], ...args: Parameters<T[K]>): KeepToken {
     const token ='Token_' + counter++;
 
-    shouldPublish(deps) && this.publish(name, ...args);
+    when(shouldPublish) && this.publish(name, ...args);
     this.keeps.push({
-      deps,
+      shouldPublish,
       token,
       name,
       args,
