@@ -52,10 +52,20 @@ export class Topic<T extends CommonObject> {
   }
 
   subscribeOnce<K extends keyof T>(name: K, fn: Callback<T, K>): SubscribeToken {
+    let executed = false;
+
     const token = this.subscribe(name, function () {
       fn.apply(null, arguments as unknown as Parameters<T[K]>);
-      token.unsubscribe();
+      if (token) {
+        token.unsubscribe();
+      } else {
+        executed = true;
+      }
     });
+
+    if (executed) {
+      token.unsubscribe();
+    }
 
     return token;
   }

@@ -236,3 +236,20 @@ it ('can release keeped handle', async () => {
   await sleep(5);
   expect(counter).to.equal(23);
 });
+
+it ('can compose keep and subscribeOnce', async () => {
+  const topic = new Topic<{
+    hello: (num: number) => void;
+  }>();
+
+  let counter = 0;
+
+  const token1 = topic.keep('hello', true, 1);
+  topic.subscribeOnce('hello', (num) => {
+    counter += num;
+  });
+
+  expect(counter).to.equal(1);
+
+  token1.release();
+});
