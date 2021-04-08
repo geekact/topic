@@ -141,7 +141,7 @@ it ('can subscribe when publishing but only effect next time', () => {
   expect(counter).to.equal(7);
 });
 
-it ('can keep publishing', async () => {
+it ('can keep publishing', () => {
   const topic = new Topic<{
     hello: (num: number) => void;
   }>();
@@ -237,7 +237,7 @@ it ('can release keeped handle', async () => {
   expect(counter).to.equal(23);
 });
 
-it ('can compose keep and subscribeOnce', async () => {
+it ('can compose keep and subscribeOnce', () => {
   const topic = new Topic<{
     hello: (num: number) => void;
   }>();
