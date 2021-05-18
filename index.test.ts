@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import sleep from 'sleep-promise';
 import { Topic } from './index';
 
 it ('can subscribe', () => {
@@ -194,8 +193,6 @@ it ('can set deps for keep publish', async () => {
     counter += num * 20;
   });
   expect(counter).to.equal(4);
-  await sleep(5);
-  expect(counter).to.equal(4);
 });
 
 it ('can release keeped handle', async () => {
@@ -225,7 +222,6 @@ it ('can release keeped handle', async () => {
   topic.subscribe('hello', (num) => {
     counter += num;
   });
-  await sleep(5);
   expect(counter).to.equal(23);
 
   // remain 0 keeper
@@ -233,7 +229,6 @@ it ('can release keeped handle', async () => {
   topic.subscribe('hello', (num) => {
     counter += num;
   });
-  await sleep(5);
   expect(counter).to.equal(23);
 });
 

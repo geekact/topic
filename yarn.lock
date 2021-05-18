@@ -392,11 +392,6 @@ convert-source-map@^1.7.0:
   dependencies:
     safe-buffer "~5.1.1"
 
-core-js@^3.6.5:
-  version "3.8.1"
-  resolved "https://registry.npmjs.org/core-js/-/core-js-3.8.1.tgz#f51523668ac8a294d1285c3b9db44025fda66d47"
-  integrity sha512-9Id2xHY1W7m8hCl8NkhQn5CufmF/WuR30BTRewvCXc1aZd3kMECwNZ69ndLbekKfakw9Rf2Xyc+QR6E7Gg+obg==
-
 create-require@^1.1.0:
   version "1.1.1"
   resolved "https://registry.npm.taobao.org/create-require/download/create-require-1.1.1.tgz#c1d7e8f1e5f6cfc9ff65f9cd352d37348756c333"
@@ -996,13 +991,6 @@ signal-exit@^3.0.2:
   version "3.0.3"
   resolved "https://registry.npm.taobao.org/signal-exit/download/signal-exit-3.0.3.tgz#a1410c2edd8f077b08b4e253c8eacfcaf057461c"
   integrity sha1-oUEMLt2PB3sItOJTyOrPyvBXRhw=
-
-sleep-promise@^9.0.0:
-  version "9.0.0"
-  resolved "https://registry.npmjs.org/sleep-promise/-/sleep-promise-9.0.0.tgz#99bf063ee5f821edc974d9011478ed7cadfebaa3"
-  integrity sha512-7x3Fra49pMKWs0+jzOXBVR31GkP3NwmFMoxH/irXcUCUyglhPtoQa/XaC7OimjI41YEGP00StD8UlmJL/MBHlw==
-  dependencies:
-    core-js "^3.6.5"
 
 source-map-support@^0.5.17:
   version "0.5.19"
