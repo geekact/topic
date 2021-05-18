@@ -1,4 +1,4 @@
-A light event management with typescript.
+A light sync event management with typescript.
 
 [![License](https://img.shields.io/github/license/fwh1990/topic)](https://github.com/fwh1990/topic/blob/master/LICENSE)
 [![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/fwh1990/topic/CI/master)](https://github.com/fwh1990/topic/actions)
@@ -64,18 +64,18 @@ const sub1 = topic.subscribe('who', (name) => {
   console.log('Hello ' + name);
 });
 
-// sub1 will receive message.
+// sub1 will receive message now.
 const handle = topic.keep('who', true, 'Tom');
 
-// sub2 will receive message 1-2ms later.
+// sub2 will receive message immediately.
 const sub2 = topic.subscribe('who', (name) => {});
 
-// sub3 will receive message 1-2ms later automatically.
+// sub3 will receive message immediately.
 const sub3 = topic.subscribe('who', (name) => {});
 
 handle.release();
 
-// No message will trigger this subscription.
+// No message will emit to this subscription.
 const sub3 = topic.subscribe('who', (name) => {});
 ```
 
