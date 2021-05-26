@@ -95,7 +95,7 @@ it ('can unpublish multiple times', () => {
 
 it ('can take parameters', () => {
   const topic = new Topic<{
-    sum: (a: number, b: number) => void;
+    sum: [a: number, b: number];
   }>();
   let sum = 0;
 
@@ -142,7 +142,7 @@ it ('can subscribe when publishing but only effect next time', () => {
 
 it ('can keep publishing', () => {
   const topic = new Topic<{
-    hello: (num: number) => void;
+    hello: [num: number];
   }>();
   let counter = 0;
 
@@ -162,7 +162,7 @@ it ('can keep publishing', () => {
 
 it ('can set deps for keep publish', async () => {
   const topic = new Topic<{
-    hello: (num: number) => void;
+    hello: [num: number];
   }>();
   let deps = false;
   let counter = 0;
@@ -197,7 +197,7 @@ it ('can set deps for keep publish', async () => {
 
 it ('can release keeped handle', async () => {
   const topic = new Topic<{
-    hello: (num: number) => void;
+    hello: [num: number];
   }>();
   let counter = 0;
 
@@ -234,7 +234,7 @@ it ('can release keeped handle', async () => {
 
 it ('can compose keep and subscribeOnce', () => {
   const topic = new Topic<{
-    hello: (num: number) => void;
+    hello: [num: number];
   }>();
 
   let counter = 0;
@@ -247,4 +247,29 @@ it ('can compose keep and subscribeOnce', () => {
   expect(counter).to.equal(1);
 
   token1.release();
+});
+
+it ('is type checking', () => {
+  const topic = new Topic<{
+    hello: [num: number];
+    hi: [x: number, y: string, z: boolean];
+    [key: string]: any[];
+  }>();
+
+  (function() {
+    // @ts-expect-error
+    topic.publish('hello');
+    // @ts-expect-error
+    topic.publish('hello', '2');
+    topic.publish('hello', 2);
+
+    topic.publish('hi', 3, '4', true);
+    // @ts-expect-error
+    topic.publish('hi', '4', '4', true);
+    // @ts-expect-error
+    topic.publish('hi', 3, '4');
+
+    topic.publish('');
+    topic.publish('zzzzz', 'a', 2, 'b', false);
+  });
 });

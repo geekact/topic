@@ -7,16 +7,16 @@ export interface KeepToken {
 }
 
 export interface CommonObject {
-  [key: string]: (...args: any[]) => void;
+  [key: string]: any[];
 }
 
 interface Callback<T extends CommonObject, K extends keyof T> {
-  (...args: Parameters<T[K]>): void;
+  (...args: T[K]): void;
 }
 
 type Listener<T extends CommonObject> = Partial<Record<keyof T, {
   token: string;
-  fn: Callback<T, keyof T>;
+  fn: Callback<T, any>;
 }[]>>;
 
 interface Keep<T extends CommonObject> {
@@ -37,7 +37,7 @@ export class Topic<T extends CommonObject> {
   protected origins: Listener<T> = {};
   protected keeps: Keep<T>[] = [];
 
-  publish<K extends keyof T>(name: K, ...args: Parameters<T[K]>): void {
+  publish<K extends keyof T>(name: K, ...args: T[K]): void {
     const listeners = this.origins[name] = this.listeners[name];
 
     if (!listeners || !listeners.length) {
@@ -55,7 +55,7 @@ export class Topic<T extends CommonObject> {
     let executed = false;
 
     const token = this.subscribe(name, function () {
-      fn.apply(null, arguments as unknown as Parameters<T[K]>);
+      fn.apply(null, arguments as unknown as T[K]);
       if (token) {
         token.unsubscribe();
       } else {
@@ -93,7 +93,7 @@ export class Topic<T extends CommonObject> {
       const keeps = this.keeps.filter((item) => item.name === name && when(item.shouldPublish));
 
       for (let i = 0; i < keeps.length; ++i) {
-        fn.apply(null, keeps[i]!.args as Parameters<T[K]>);
+        fn.apply(null, keeps[i]!.args as T[K]);
       }
     }
 
@@ -110,7 +110,7 @@ export class Topic<T extends CommonObject> {
    * topic.keep('test', () => deps, 'hello', 'world');
    * ```
    */
-  keep<K extends keyof T>(name: K, shouldPublish: Keep<T>['shouldPublish'], ...args: Parameters<T[K]>): KeepToken {
+  keep<K extends keyof T>(name: K, shouldPublish: Keep<T>['shouldPublish'], ...args: T[K]): KeepToken {
     const token ='Token_' + counter++;
 
     when(shouldPublish) && this.publish(name, ...args);

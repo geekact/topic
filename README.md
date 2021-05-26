@@ -84,10 +84,10 @@ const sub3 = topic.subscribe('who', (name) => {});
 import { Topic } from 'topic';
 
 const customTopic = new Topic<{
-  foo: (name: string) => void;
-  bar: (name: string, age: number) => void;
+  foo: [name: string];
+  bar: [name: string, age: number];
   // Uncomment next line if you want to support unexpected keys.
-  // [more: string]: (...args: any[]) => void;
+  // [more: string]: any[];
 }>();
 
 // Make IDE happy now.
