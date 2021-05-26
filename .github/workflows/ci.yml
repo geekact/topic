@@ -11,8 +11,8 @@ jobs:
     if: "!contains(toJson(github.event.commits), '[skip ci]')"
     strategy:
       matrix:
-        node-version: [12.13.x]
-        ts-version: [3.9.x, 4.0.x, 4.1.x]
+        node-version: [12, 14]
+        ts-version: [4.0.x, 4.1.x, 4.2.x]
 
     runs-on: ubuntu-latest
 
@@ -28,4 +28,4 @@ jobs:
     - run: yarn test
     - name: Coverage
       uses: codecov/codecov-action@v1
-      if: matrix.node-version == '12.13.x' && matrix.ts-version == '3.9.x' && github.ref == 'refs/heads/master'
+      if: matrix.node-version == '12' && matrix.ts-version == '4.2.x' && github.ref == 'refs/heads/master'
