@@ -249,6 +249,24 @@ it ('can compose keep and subscribeOnce', () => {
   token1.release();
 });
 
+it ('can notify earlier subscription by keeper', ()=> {
+  const topic = new Topic<{
+    hello: [];
+  }>();
+
+  let counter = 0;
+
+  topic.subscribe('hello', () => {
+    counter += 3;
+  });
+  topic.subscribeOnce('hello', () => {
+    counter += 2;
+  });
+  topic.keep('hello', true);
+
+  expect(counter).to.equal(5);
+});
+
 it ('is type checking', () => {
   const topic = new Topic<{
     hello: [num: number];
