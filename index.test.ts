@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { Topic } from './index';
 
-it ('can subscribe', () => {
+it('can subscribe', () => {
   const topic = new Topic();
   let counter = 0;
 
@@ -25,7 +25,7 @@ it ('can subscribe', () => {
   expect(counter).to.equal(6);
 });
 
-it ('can subscribe topic only once', () => {
+it('can subscribe topic only once', () => {
   const topic = new Topic();
   let counter = 0;
 
@@ -49,7 +49,7 @@ it ('can subscribe topic only once', () => {
   expect(counter).to.equal(11);
 });
 
-it ('can unsubscribe the topic by token', () => {
+it('can unsubscribe the topic by token', () => {
   const topic = new Topic();
   let counter = 0;
 
@@ -68,7 +68,7 @@ it ('can unsubscribe the topic by token', () => {
   expect(counter).to.equal(2);
 });
 
-it ('can unpublish multiple times', () => {
+it('can unpublish multiple times', () => {
   const topic = new Topic();
   let counter = 0;
 
@@ -93,7 +93,7 @@ it ('can unpublish multiple times', () => {
   expect(counter).to.equal(1);
 });
 
-it ('can take parameters', () => {
+it('can take parameters', () => {
   const topic = new Topic<{
     sum: [a: number, b: number];
   }>();
@@ -110,7 +110,7 @@ it ('can take parameters', () => {
   expect(sum).to.equal(170);
 });
 
-it ('can subscribe when publishing but only effect next time', () => {
+it('can subscribe when publishing but only effect next time', () => {
   const topic = new Topic();
   let counter = 0;
 
@@ -140,7 +140,7 @@ it ('can subscribe when publishing but only effect next time', () => {
   expect(counter).to.equal(7);
 });
 
-it ('can keep publishing', () => {
+it('can keep publishing', () => {
   const topic = new Topic<{
     hello: [num: number];
   }>();
@@ -160,7 +160,7 @@ it ('can keep publishing', () => {
   expect(counter).to.equal(9);
 });
 
-it ('can set deps for keep publish', async () => {
+it('can set deps for keep publish', async () => {
   const topic = new Topic<{
     hello: [num: number];
   }>();
@@ -195,7 +195,7 @@ it ('can set deps for keep publish', async () => {
   expect(counter).to.equal(4);
 });
 
-it ('can release keeped handle', async () => {
+it('can release keeped handle', async () => {
   const topic = new Topic<{
     hello: [num: number];
   }>();
@@ -232,7 +232,7 @@ it ('can release keeped handle', async () => {
   expect(counter).to.equal(23);
 });
 
-it ('can compose keep and subscribeOnce', () => {
+it('can compose keep and subscribeOnce', () => {
   const topic = new Topic<{
     hello: [num: number];
   }>();
@@ -249,7 +249,7 @@ it ('can compose keep and subscribeOnce', () => {
   token1.release();
 });
 
-it ('can notify earlier subscription by keeper', ()=> {
+it('can notify earlier subscription by keeper', () => {
   const topic = new Topic<{
     hello: [];
   }>();
@@ -267,14 +267,14 @@ it ('can notify earlier subscription by keeper', ()=> {
   expect(counter).to.equal(5);
 });
 
-it ('is type checking', () => {
+it('is type checking', () => {
   const topic = new Topic<{
     hello: [num: number];
     hi: [x: number, y: string, z: boolean];
     [key: string]: any[];
   }>();
 
-  (function() {
+  (function () {
     // @ts-expect-error
     topic.publish('hello');
     // @ts-expect-error

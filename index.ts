@@ -14,10 +14,15 @@ interface Callback<T extends CommonObject, K extends keyof T> {
   (...args: T[K]): void;
 }
 
-type Listener<T extends CommonObject> = Partial<Record<keyof T, {
-  token: string;
-  fn: Callback<T, any>;
-}[]>>;
+type Listener<T extends CommonObject> = Partial<
+  Record<
+    keyof T,
+    {
+      token: string;
+      fn: Callback<T, any>;
+    }[]
+  >
+>;
 
 interface Keep<T extends CommonObject> {
   shouldPublish: true | (() => boolean);
@@ -38,7 +43,7 @@ export class Topic<T extends CommonObject> {
   protected keeps: Keep<T>[] = [];
 
   publish<K extends keyof T>(name: K, ...args: T[K]): void {
-    const listeners = this.origins[name] = this.listeners[name];
+    const listeners = (this.origins[name] = this.listeners[name]);
 
     if (!listeners || !listeners.length) {
       return;
@@ -51,7 +56,10 @@ export class Topic<T extends CommonObject> {
     this.origins[name] = undefined;
   }
 
-  subscribeOnce<K extends keyof T>(name: K, fn: Callback<T, K>): SubscribeToken {
+  subscribeOnce<K extends keyof T>(
+    name: K,
+    fn: Callback<T, K>,
+  ): SubscribeToken {
     let executed = false;
 
     const token = this.subscribe(name, function () {
@@ -90,7 +98,9 @@ export class Topic<T extends CommonObject> {
     });
 
     if (this.keeps.length) {
-      const keeps = this.keeps.filter((item) => item.name === name && when(item.shouldPublish));
+      const keeps = this.keeps.filter(
+        (item) => item.name === name && when(item.shouldPublish),
+      );
 
       for (let i = 0; i < keeps.length; ++i) {
         fn.apply(null, keeps[i]!.args as T[K]);
@@ -110,8 +120,12 @@ export class Topic<T extends CommonObject> {
    * topic.keep('test', () => deps, 'hello', 'world');
    * ```
    */
-  keep<K extends keyof T>(name: K, shouldPublish: Keep<T>['shouldPublish'], ...args: T[K]): KeepToken {
-    const token ='Token_' + counter++;
+  keep<K extends keyof T>(
+    name: K,
+    shouldPublish: Keep<T>['shouldPublish'],
+    ...args: T[K]
+  ): KeepToken {
+    const token = 'Token_' + counter++;
 
     when(shouldPublish) && this.publish(name, ...args);
     this.keeps.push({
