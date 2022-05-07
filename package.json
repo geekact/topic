@@ -22,7 +22,7 @@
     "prepare": "husky install"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=12"
   },
   "commitlint": {
     "extends": [
