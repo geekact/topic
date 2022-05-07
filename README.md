@@ -1,4 +1,4 @@
-A lightweight sync event management with typescript.
+轻量级事件同步收发管理
 
 [![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/geekact/topic/CI/master)](https://github.com/geekact/topic/actions)
 [![Codecov](https://img.shields.io/codecov/c/github/geekact/topic)](https://codecov.io/gh/geekact/topic)
@@ -7,19 +7,29 @@ A lightweight sync event management with typescript.
 ![GitHub top language](https://img.shields.io/github/languages/top/geekact/topic)
 [![License](https://img.shields.io/github/license/geekact/topic)](https://github.com/geekact/topic/blob/master/LICENSE)
 
-## Installation
+## 安装
 
 ```
 yarn add topic
 ```
 
-# Methods
+# 方法
 
-### subscribe
+### publish
+
+发布事件
 
 ```typescript
 import { topic } from 'topic';
 
+topic.publish('name', 'message');
+```
+
+### subscribe
+
+订阅事件
+
+```typescript
 topic.subscribe('who', (name, age) => {
   console.log('Hello' + name + ', are you ' + age + 'old?');
 });
@@ -29,63 +39,65 @@ topic.publish('who', 'Tom', 12);
 
 ### subscribeOnce
 
-```typescript
-import { topic } from 'topic';
+订阅事件，接收一次后立即取消
 
+```typescript
 topic.subscribeOnce('who', (name) => {
   console.log('Hello ' + name);
 });
 
-// 1 subscription will receive message.
+// 有一个订阅者收到消息
 topic.publish('who', 'Tom');
-// No subscription now.
+// 没有订阅者了
 topic.publish('who', 'Tom');
 ```
 
 ### unsubscribe
 
-```typescript
-import { topic } from 'topic';
+取消订阅事件
 
+```typescript
 const handle = topic.subscribe('who', (name) => {
   console.log('Hello ' + name);
 });
 
-// 1 subscription will receive message.
+// 有一个订阅者收到消息
 topic.publish('who', 'Tom');
-// 1 subscription will receive message.
+// 有一个订阅者收到消息
 topic.publish('who', 'John');
 
 handle.unsubscribe();
-// No subscription now.
+// 没有订阅者了
 topic.publish('who', 'Tom');
 ```
 
-### keep and release
+### keep + release
+
+持续发布事件
 
 ```typescript
-import { topic } from 'topic';
-
 const sub1 = topic.subscribe('who', (name) => {
   console.log('Hello ' + name);
 });
 
-// sub1 will receive message now.
+// sub1 收到消息
 const handle = topic.keep('who', true, 'Tom');
 
-// sub2 will receive message immediately.
+// sub2 立即收到消息
 const sub2 = topic.subscribe('who', (name) => {});
 
-// sub3 will receive message immediately.
+// sub3 立即收到消息
 const sub3 = topic.subscribe('who', (name) => {});
 
 handle.release();
 
-// No message will emit to this subscription.
+// sub3 没有收到消息
 const sub3 = topic.subscribe('who', (name) => {});
 ```
 
-# With typescript generic
+# 使用 TS 泛型自定义事件
+
+实例后的 topic 都是互不干扰的，适用于全局业务或者局部业务
 
 ```typescript
 import { Topic } from 'topic';
@@ -93,11 +105,12 @@ import { Topic } from 'topic';
 const customTopic = new Topic<{
   foo: [name: string];
   bar: [name: string, age: number];
-  // Uncomment next line if you want to support unexpected keys.
+  // 如果你想传入更多不可控的事件名称，则取消下面这行注释
   // [more: string]: any[];
 }>();
 
-// Make IDE happy now.
+// 现在编辑器能提示出name的类型了
 customTopic.subscribe('foo', (name) => {});
+// 现在编辑器知道第二个参数应该传什么类型了
 customTopic.publish('foo', 'Tom');
 ```
