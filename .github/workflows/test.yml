@@ -1,0 +1,65 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - '*'
+    tags-ignore:
+      - '*'
+  pull_request:
+    branches:
+
+jobs:
+  type-checking:
+    if: "!contains(toJson(github.event.commits), '[skip ci]')"
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x, 16.x, 18.x]
+        ts-version: [4.0.x, 4.1.x, 4.2.x, 4.3.x, 4.4.x, 4.5.x, 4.6.x]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }} & Typescript ${{ matrix.ts-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: |
+          yarn install
+          yarn add typescript@${{ matrix.ts-version }} --dev
+      - run: yarn tsc
+
+  test:
+    if: "!contains(toJson(github.event.commits), '[skip ci]')"
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x, 16.x, 18.x]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: yarn install
+      - run: yarn test
+      - name: Upload Coverage
+        uses: actions/upload-artifact@v2
+        if: github.ref == 'refs/heads/master'
+        with:
+          name: coverage
+          path: coverage
+          if-no-files-found: error
+          retention-days: 1
+
+  coverage:
+    if: github.ref == 'refs/heads/master'
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Download Coverage
+        uses: actions/download-artifact@v2
+        with:
+          name: coverage
+          path: coverage
+      - uses: codecov/codecov-action@v2

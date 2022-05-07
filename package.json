@@ -1,40 +1,58 @@
 {
   "name": "topic",
   "version": "3.0.0",
-  "description": "A light sync event management with typescript",
-  "main": "index.lib.js",
-  "module": "index.es.js",
-  "typings": "index.d.ts",
+  "description": "A lightweight sync event management with typescript",
+  "contributors": [
+    "罪 <fanwenhua1990@gmail.com> (https://github.com/geekact)"
+  ],
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
   "scripts": {
-    "test": "rm -rf *.js *.d.ts && nyc mocha index.test.ts -r ts-node/register",
-    "prepublishOnly": "rm -rf *.js *.d.ts && yarn tsc && mv index.js index.lib.js && yarn tsc --module ES6 && mv index.js index.es.js"
+    "test": "jest",
+    "prepublishOnly": "tsup",
+    "prepare": "husky install"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/geekact/topic.git"
+  "engines": {
+    "node": ">=10"
   },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "repository": "git@github.com:geekact/topic.git",
   "keywords": [
+    "events",
     "subscribe",
     "subscription",
     "publish"
   ],
-  "author": "范文华",
   "license": "MIT",
   "devDependencies": {
-    "@types/chai": "^4.2.18",
-    "@types/mocha": "^8.2.2",
-    "@types/node": "^15.6.1",
-    "chai": "^4.3.4",
-    "mocha": "^8.4.0",
-    "nyc": "^15.1.0",
+    "@commitlint/cli": "^16.2.4",
+    "@commitlint/config-conventional": "^16.2.4",
+    "@swc/core": "^1.2.177",
+    "@types/jest": "^27.5.0",
+    "@types/node": "^17.0.31",
+    "husky": "^7.0.4",
+    "jest": "^28.1.0",
     "prettier": "^2.6.2",
-    "ts-node": "^10.0.0",
-    "typescript": "^4.3.5"
+    "ts-jest": "^28.0.1",
+    "tsup": "^5.12.7",
+    "typescript": "^4.6.4"
   },
   "files": [
-    "index.lib.js",
-    "index.es.js",
-    "index.d.ts",
+    "dist",
+    "index.ts",
     "package.json",
     "README.md",
     "LICENSE"

@@ -1,18 +1,22 @@
-A light sync event management with typescript.
+A lightweight sync event management with typescript.
 
-[![License](https://img.shields.io/github/license/fwh1990/topic)](https://github.com/fwh1990/topic/blob/master/LICENSE)
-[![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/fwh1990/topic/CI/master)](https://github.com/fwh1990/topic/actions)
-[![Codecov](https://img.shields.io/codecov/c/github/fwh1990/topic)](https://codecov.io/gh/fwh1990/topic)
-
+[![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/geekact/topic/CI/master)](https://github.com/geekact/topic/actions)
+[![Codecov](https://img.shields.io/codecov/c/github/geekact/topic)](https://codecov.io/gh/geekact/topic)
+[![npm](https://img.shields.io/npm/v/topic)](https://www.npmjs.com/package/topic)
+[![npm bundle size (version)](https://img.shields.io/bundlephobia/minzip/topic?label=bundle+size)](https://bundlephobia.com/package/topic@latest)
+![GitHub top language](https://img.shields.io/github/languages/top/geekact/topic)
+[![License](https://img.shields.io/github/license/geekact/topic)](https://github.com/geekact/topic/blob/master/LICENSE)
 
 ## Installation
-````
+
+```
 yarn add topic
-````
+```
 
 # Methods
 
 ### subscribe
+
 ```typescript
 import { topic } from 'topic';
 
@@ -24,6 +28,7 @@ topic.publish('who', 'Tom', 12);
 ```
 
 ### subscribeOnce
+
 ```typescript
 import { topic } from 'topic';
 
@@ -38,6 +43,7 @@ topic.publish('who', 'Tom');
 ```
 
 ### unsubscribe
+
 ```typescript
 import { topic } from 'topic';
 
@@ -80,6 +86,7 @@ const sub3 = topic.subscribe('who', (name) => {});
 ```
 
 # With typescript generic
+
 ```typescript
 import { Topic } from 'topic';
 

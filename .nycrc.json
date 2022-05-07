@@ -1,5 +1,0 @@
-{
-  "extension": [".ts"],
-  "include": ["index.ts"],
-  "reporter": ["text-summary", "lcov"]
-}
