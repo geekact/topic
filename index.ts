@@ -62,20 +62,22 @@ export class Topic<T extends CommonObject> {
   ): SubscribeToken {
     let executed = false;
 
-    const token = this.subscribe(name, function () {
+    const ref: { token?: SubscribeToken } = {};
+
+    ref.token = this.subscribe(name, function () {
       fn.apply(null, arguments as unknown as T[K]);
-      if (token) {
-        token.unsubscribe();
+      if (ref.token) {
+        ref.token.unsubscribe();
       } else {
         executed = true;
       }
     });
 
     if (executed) {
-      token.unsubscribe();
+      ref.token.unsubscribe();
     }
 
-    return token;
+    return ref.token;
   }
 
   subscribe<K extends keyof T>(name: K, fn: Callback<T, K>): SubscribeToken {

@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         node-version: [12.x, 14.x, 16.x, 18.x]
-        ts-version: [4.0.x, 4.1.x, 4.2.x, 4.3.x, 4.4.x, 4.5.x, 4.6.x]
+        ts-version: [4.4.x, 4.5.x, 4.6.x]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
