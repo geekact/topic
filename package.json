@@ -1,7 +1,7 @@
 {
   "name": "topic",
-  "version": "3.0.0",
-  "description": "A lightweight sync event management with typescript",
+  "version": "3.0.1",
+  "description": "轻量级事件同步收发管理",
   "contributors": [
     "罪 <fanwenhua1990@gmail.com> (https://github.com/geekact)"
   ],
@@ -53,8 +53,9 @@
   "files": [
     "dist",
     "index.ts",
+    "LICENSE",
     "package.json",
     "README.md",
-    "LICENSE"
+    "CHANGELOG.md"
   ]
 }
