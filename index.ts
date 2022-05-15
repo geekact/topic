@@ -35,6 +35,8 @@ const when = (deps: true | (() => boolean)): boolean => {
   return typeof deps === 'boolean' ? deps : deps();
 };
 
+const aps = Array.prototype.slice;
+
 let counter: number = 0;
 
 export class Topic<T extends CommonObject> {
@@ -42,7 +44,10 @@ export class Topic<T extends CommonObject> {
   protected origins: Listener<T> = {};
   protected keeps: Keep<T>[] = [];
 
-  publish<K extends keyof T>(name: K, ...args: T[K]): void {
+  publish<K extends keyof T>(name: K, ...args: T[K]): void;
+  publish<K extends keyof T>(): void {
+    const name: K = arguments[0];
+    const args = aps.call(arguments, 1) as T[K];
     const listeners = (this.origins[name] = this.listeners[name]);
 
     if (!listeners || !listeners.length) {
@@ -126,10 +131,15 @@ export class Topic<T extends CommonObject> {
     name: K,
     shouldPublish: Keep<T>['shouldPublish'],
     ...args: T[K]
-  ): KeepToken {
+  ): KeepToken;
+  keep<K extends keyof T>(): KeepToken {
+    const name: K = arguments[0];
+    const shouldPublish: Keep<T>['shouldPublish'] = arguments[1];
+    const args = aps.call(arguments, 2) as T[K];
     const token = 'Token_' + counter++;
 
-    when(shouldPublish) && this.publish(name, ...args);
+    when(shouldPublish) &&
+      this.publish.apply(this, [name].concat(args) as [name: K, ...args: T[K]]);
     this.keeps.push({
       shouldPublish,
       token,
