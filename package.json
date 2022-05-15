@@ -6,13 +6,13 @@
     "罪 <fanwenhua1990@gmail.com> (https://github.com/geekact)"
   ],
   "main": "dist/index.js",
-  "module": "dist/index.mjs",
+  "module": "dist/esm/index.js",
   "types": "dist/index.d.ts",
   "sideEffects": false,
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
+      "import": "./dist/esm/index.js",
       "require": "./dist/index.js"
     }
   },
@@ -52,7 +52,6 @@
   },
   "files": [
     "dist",
-    "index.ts",
     "LICENSE",
     "package.json",
     "README.md",

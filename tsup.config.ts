@@ -9,6 +9,8 @@ export default defineConfig({
   platform: 'node',
   tsconfig: './tsconfig.json',
   target: 'es5',
+  legacyOutput: true,
   shims: false,
   dts: true,
+  onSuccess: 'cp package.esm.json dist/esm/package.json',
 });
