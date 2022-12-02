@@ -14,36 +14,40 @@ jobs:
     if: "!contains(toJson(github.event.commits), '[skip ci]')"
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x, 18.x]
-        ts-version: [4.4.x, 4.5.x, 4.6.x]
+        node-version: [14.x, 16.x, 18.x]
+        ts-version: [4.4.x, 4.5.x, 4.6.x, 4.7.x, 4.8.x, 4.9.x]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
       - name: Use Node.js ${{ matrix.node-version }} & Typescript ${{ matrix.ts-version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
+          cache: 'pnpm'
           node-version: ${{ matrix.node-version }}
       - run: |
-          yarn install
-          yarn add typescript@${{ matrix.ts-version }} --dev
-      - run: yarn tsc
+          pnpm install
+          pnpm add typescript@${{ matrix.ts-version }} -D
+      - run: npx --no-install tsc --noEmit
 
   test:
     if: "!contains(toJson(github.event.commits), '[skip ci]')"
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x, 18.x]
+        node-version: [14.x, 16.x, 18.x]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
+          cache: 'pnpm'
           node-version: ${{ matrix.node-version }}
-      - run: yarn install
-      - run: yarn test
+      - run: pnpm install
+      - run: npm test
       - name: Upload Coverage
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: github.ref == 'refs/heads/master'
         with:
           name: coverage
@@ -56,10 +60,10 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Download Coverage
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: coverage
           path: coverage
-      - uses: codecov/codecov-action@v2
+      - uses: codecov/codecov-action@v3
